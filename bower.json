@@ -1,0 +1,13 @@
+{
+  "name": "bot-game",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "phaser": "~2.1.0",
+    "Sortable": "~0.5.0",
+    "jquery": "~2.1.1"
+  },
+  "devDependencies": {}
+}

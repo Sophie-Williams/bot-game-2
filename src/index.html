@@ -1,0 +1,94 @@
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+
+  <!-- bower:js -->
+  <script src="../bower_components/phaser/build/phaser.min.js"></script>
+  <script src="../bower_components/sortable/Sortable.min.js"></script>
+  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <!-- endbower -->
+
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <div id="playground"></div>
+
+  <div class="controls">
+    <ul id="tool-bar">
+      <li class="button" data-tool="1">
+        <span class="knob"></span>
+        <i class="icon-left icon"></i>
+      </li>
+      <li class="button" data-tool="2">
+        <span class="knob"></span>
+        <i class="icon-right icon"></i>
+      </li>
+      <li class="button"data-tool="3">
+        <span class="knob"></span>
+        <i class="icon-up icon"></i>
+      </li>
+      <li class="button" data-tool="4">
+        <span class="knob"></span>
+        <i class="icon-down icon"></i>
+      </li>
+      <li class="button" data-tool="5">
+        <span class="knob"></span>
+        <i class="icon-jump icon"></i>
+      </li>
+      <li class="button" data-tool="6">
+        <span class="knob"></span>
+        <i class="icon-duck icon"></i>
+      </li>
+      <li class="button" data-tool="7">
+        <span class="knob"></span>
+        <i class="icon-rotate-left icon"></i>
+      </li>
+      <li class="button" data-tool="8">
+        <span class="knob"></span>
+        <i class="icon-rotate-right icon"></i>
+      </li>
+      <li class="button" data-tool="9">
+        <span class="knob"></span>
+        <i class="icon-slot icon"></i>
+      </li>
+      <li class="button" data-tool="10">
+        <span class="knob"></span>
+        <i class="icon-special icon"></i>
+      </li>
+    </ul>
+
+    <ul id="command-bar">
+    </ul>
+
+    <ul>
+      <li class="button" id="rewind">
+        <span class="knob"></span>
+        <i class="icon-rewind icon"></i>
+      </li>
+      <li class="button" id="reset">
+        <span class="knob"></span>
+        <i class="icon-reset icon"></i>
+      </li>
+      <li class="button" id="play">
+        <span class="knob"></span>
+        <i class="icon-play icon"></i>
+      </li>
+      <li class="button" id="debug-info">
+        <span class="knob"></span>
+        <i class="icon-screen icon"></i>
+      </li>
+      <li class="button" id="debug-overlay">
+        <span class="knob"></span>
+        <i class="icon-overlap icon"></i>
+      </li>
+    </ul>
+
+  </div>
+
+  <script src="js/game.js"></script>
+  <script src="//localhost:35353/livereload.js"></script>
+
+</body>
+</html>
