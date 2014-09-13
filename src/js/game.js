@@ -1,7 +1,7 @@
 (function(global) {
   'use strict';
 
-  var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'playground', {
+  var game = new Phaser.Game(750, 600, Phaser.CANVAS, 'playground', {
     preload: preload,
     create: create,
     update: update,
@@ -9,8 +9,16 @@
   }, true, false);
 
   var bot;
-  var gem;
+  var key;
   var text;
+  var map;
+  var key;
+  var gate;
+  var layer;
+  var group1;
+  var group2;
+  var group3;
+  var commandCount = 0;
   var commands = [];
   var intervalID;
   var botCommand = {
@@ -31,23 +39,19 @@
         commands.push(toolId);
     })
     commands.reverse();
+    commandCount = commands.length;
     moveBot();
   });
 
   $('#rewind').on('click', function() {
-    clearInterval(intervalID);
     $("#command-bar li").removeClass('active');
-    bot.reset(100, 380, 0);
-    commands = [];
+    resetBot();
   });
 
   $('#reset').on('click', function() {
-    clearInterval(intervalID);
     $("#command-bar").html('');
-    moveRangeX = 0;
-    moveRangeY = 0;
-    commands = [];
-    bot.reset(100, 380, 0);
+    resetKey();
+    resetBot();
   });
 
   $('#debug-info').on('click', function() {
@@ -76,10 +80,7 @@
     }
   });
 
-  new Sortable(commandBar, {
-
-  });
-
+  new Sortable(commandBar, {});
 
   function preload () {
 
@@ -89,7 +90,19 @@
     game.load.image('stone', 'img/stone.png');
     game.load.image('water', 'img/water.png');
     game.load.image('girl', 'img/girl.png');
-    game.load.image('gem', 'img/gem.png');
+    game.load.image('key', 'img/key.png');
+
+    game.load.image('shadow-east', 'img/shadow-east.png');
+    game.load.image('shadow-north-east', 'img/shadow-north-east.png');
+    game.load.image('shadow-north-west', 'img/shadow-north-west.png');
+    game.load.image('shadow-north', 'img/shadow-north.png');
+    game.load.image('shadow-side-west', 'img/shadow-side-west.png');
+    game.load.image('shadow-south-east', 'img/shadow-south-east.png');
+    game.load.image('shadow-south-west', 'img/shadow-south-west.png');
+    game.load.image('shadow-south', 'img/shadow-south.png');
+    game.load.image('shadow-west', 'img/shadow-west.png');
+
+    game.load.tilemap('map', 'json/level1.json', null, Phaser.Tilemap.TILED_JSON);
 
   }
 
@@ -97,60 +110,56 @@
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    game.add.sprite(100, 180, 'dirt').anchor.setTo(0.5, 0.5);
-    game.add.sprite(200, 180, 'dirt').anchor.setTo(0.5, 0.5);
-    game.add.sprite(300, 180, 'dirt').anchor.setTo(0.5, 0.5);
-    game.add.sprite(400, 180, 'dirt').anchor.setTo(0.5, 0.5);
-    game.add.sprite(500, 180, 'dirt').anchor.setTo(0.5, 0.5);
+    map = game.add.tilemap('map');
 
-    game.add.sprite(100, 260, 'stone').anchor.setTo(0.5, 0.5);
-    game.add.sprite(200, 260, 'stone').anchor.setTo(0.5, 0.5);
-    game.add.sprite(300, 260, 'stone').anchor.setTo(0.5, 0.5);
-    game.add.sprite(400, 260, 'stone').anchor.setTo(0.5, 0.5);
-    game.add.sprite(500, 260, 'stone').anchor.setTo(0.5, 0.5);
+    map.addTilesetImage('dirt');
+    map.addTilesetImage('water');
+    map.addTilesetImage('stone');
+    map.addTilesetImage('shadow-east');
+    map.addTilesetImage('shadow-north-east');
+    map.addTilesetImage('shadow-north-west');
+    map.addTilesetImage('shadow-north');
+    map.addTilesetImage('shadow-side-west');
+    map.addTilesetImage('shadow-south-east');
+    map.addTilesetImage('shadow-south-west');
+    map.addTilesetImage('shadow-south');
+    map.addTilesetImage('shadow-west');
 
-    game.add.sprite(100, 340, 'water').anchor.setTo(0.5, 0.5);
-    game.add.sprite(200, 340, 'water').anchor.setTo(0.5, 0.5);
-    game.add.sprite(300, 340, 'water').anchor.setTo(0.5, 0.5);
-    game.add.sprite(400, 340, 'water').anchor.setTo(0.5, 0.5);
-    game.add.sprite(500, 340, 'stone').anchor.setTo(0.5, 0.5);
+    group1 = game.add.group();
+    group2 = game.add.group();
+    group3 = game.add.group();
 
-    game.add.sprite(100, 420, 'stone').anchor.setTo(0.5, 0.5);
-    game.add.sprite(200, 420, 'stone').anchor.setTo(0.5, 0.5);
-    game.add.sprite(300, 420, 'stone').anchor.setTo(0.5, 0.5);
-    game.add.sprite(400, 420, 'stone').anchor.setTo(0.5, 0.5);
-    game.add.sprite(500, 420, 'stone').anchor.setTo(0.5, 0.5);
+    group1.y = 40;
+    group2.y = 40;
 
-    game.add.sprite(100, 500, 'dirt').anchor.setTo(0.5, 0.5);
-    game.add.sprite(200, 500, 'dirt').anchor.setTo(0.5, 0.5);
-    game.add.sprite(300, 500, 'dirt').anchor.setTo(0.5, 0.5);
-    game.add.sprite(400, 500, 'dirt').anchor.setTo(0.5, 0.5);
-    game.add.sprite(500, 500, 'dirt').anchor.setTo(0.5, 0.5);
+    map.createLayer('layer01', 800, 600, group1);
+    map.createLayer('layer02', 800, 600, group2);
+    map.createLayer('layer03', 800, 600, group3);
 
-    gem = game.add.sprite(100, 220, 'gem');
-    gem.name = 'gem';
-    gem.anchor.setTo(0.5, 0.5);
-    game.physics.enable(gem, Phaser.Physics.ARCADE);
+    key = group3.create(150, 120, 'key');
+    key.name = 'key';
+    key.anchor.setTo(0.5, 0.5);
+    game.physics.enable(key, Phaser.Physics.ARCADE);
 
-    gem.body.setSize(100, 80, 0, 45); // change the bounding box
-    gem.body.immovable = true;
+    key.body.setSize(100, 80, 0, 50); // change the bounding box
+    key.body.immovable = true;
 
-    bot = game.add.sprite(100, 380, 'girl');
+    bot = group3.create(150, 280, 'girl');
     bot.name = 'girl';
     bot.anchor.setTo(0.5, 0.5);
     game.physics.enable(bot, Phaser.Physics.ARCADE);
 
-    bot.body.setSize(100, 80, 0, 45); // change the bounding box
+    bot.body.setSize(100, 80, 0, 50); // change the bounding box
 
   }
 
   function render () {
     // game.debug.spriteBounds(bot);
-    // game.debug.spriteBounds(gem);
+    // game.debug.spriteBounds(key);
 
     if(debug.overlay) {
       game.debug.body(bot);
-      game.debug.body(gem);
+      game.debug.body(key);
     }
 
     if(debug.info) {
@@ -160,18 +169,28 @@
   }
 
   function update() {
-    game.physics.arcade.overlap(bot, gem, collisionHandler, null, this);
+    game.physics.arcade.overlap(bot, key, collisionHandler, null, this);
   }
 
   function collisionHandler (obj1, obj2) {
     obj2.kill();
   }
 
+  function resetBot() {
+    clearInterval(intervalID);
+    commands = [];
+    bot.reset(150, 280, 0);
+  }
+
+  function resetKey() {
+    key.reset(150, 130, 0);
+  }
+
   function moveBot() {
     intervalID = setInterval(function() { 
       if(!botCommand.LEFT || !botCommand.RIGHT || !botCommand.UP || !botCommand.DOWN) {
         var currentMove = commands.pop();
-        var currentCommandNumber = 9 - commands.length;
+        var currentCommandNumber = commandCount - commands.length - 1;
         var tweenConfig = {};
         $("#command-bar li:eq( " + currentCommandNumber + " )").addClass( "active" );
         switch (currentMove) {

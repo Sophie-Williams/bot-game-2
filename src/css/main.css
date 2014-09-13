@@ -633,30 +633,31 @@ ul, li {
 /* line 25, ../scss/main.scss */
 #playground {
   float: left;
+  margin: 55px 0px 0px 30px;
 }
 
-/* line 29, ../scss/main.scss */
+/* line 30, ../scss/main.scss */
 .controls {
   width: 450px;
   margin: 140px 15px 50px 0px;
   float: right;
 }
-/* line 33, ../scss/main.scss */
+/* line 34, ../scss/main.scss */
 .controls ul {
   font-size: 0;
 }
-/* line 36, ../scss/main.scss */
+/* line 37, ../scss/main.scss */
 .controls li {
   font-size: 14px;
 }
 
-/* line 41, ../scss/main.scss */
+/* line 42, ../scss/main.scss */
 #command-bar {
   width: 450px;
   height: 180px;
 }
 
-/* line 46, ../scss/main.scss */
+/* line 47, ../scss/main.scss */
 .sortable-ghost {
   opacity: .2;
 }
